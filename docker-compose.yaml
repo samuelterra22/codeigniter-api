@@ -1,0 +1,46 @@
+version: '3.6'
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    container_name: delta-inova-nginx
+    restart: always
+    volumes:
+      - .:/var/www
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./php.ini:/usr/local/etc/php/php.ini
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  app:
+    build: .
+    container_name: delta-inova-app
+    ports:
+      - 9000:9000
+    environment:
+      - OPCACHE_SAVE_COMMENTS=1
+      - OPCACHE_VALIDATE_TIMESTAMPS=1
+      - OPCACHE_REVALIDATE_FREQ=0
+    volumes:
+      - .:/var/www
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+    depends_on:
+      - mysql
+    restart: always
+
+  mysql:
+    image: mysql:5.7
+    container_name: delta-inova-db
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=delta-inova
+      - MYSQL_DATABASE=delta-inova
+      - MYSQL_USER=delta-inova
+      - MYSQL_PASSWORD=delta-inova
+    restart: always
