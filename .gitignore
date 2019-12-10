@@ -33,3 +33,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .idea/
 volumes/
 supervisord.conf/
+.env
