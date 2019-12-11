@@ -6,20 +6,20 @@ use CodeIgniter\Model;
 
 class Aluno extends Model
 {
-	protected $table      = 'alunos';
-	protected $primaryKey = 'id';
+    protected $table = 'alunos';
+    protected $primaryKey = 'id';
 
-	protected $returnType     = 'array';
-	protected $useSoftDeletes = false;
+    protected $returnType = 'array';
+    protected $useSoftDeletes = false;
 
-	protected $allowedFields = [
-		'nome',
-		'endereco',
-	];
+    protected $allowedFields = [
+        'nome',
+        'endereco',
+    ];
 
-	protected $useTimestamps = false;
+    protected $useTimestamps = false;
 
-	protected $validationRules    = [];
-	protected $validationMessages = [];
-	protected $skipValidation     = false;
+    protected $validationRules = [];
+    protected $validationMessages = [];
+    protected $skipValidation = false;
 }

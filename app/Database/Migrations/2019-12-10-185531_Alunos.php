@@ -26,8 +26,6 @@ class Alunos extends Migration
         $this->forge->createTable('alunos');
     }
 
-    //--------------------------------------------------------------------
-
     public function down()
     {
         $this->forge->dropTable('alunos');

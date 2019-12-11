@@ -37,7 +37,7 @@ class BaseController extends Controller
      *
      * @param RequestInterface  $request
      * @param ResponseInterface $response
-     * @param LoggerInterface            $logger
+     * @param LoggerInterface   $logger
      */
     public function initController(
         RequestInterface $request,
