@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Aluno;
 use CodeIgniter\API\ResponseTrait;
+use ReflectionException;
 
 class AlunoController extends BaseController
 {
@@ -29,7 +30,7 @@ class AlunoController extends BaseController
                     'endereco' => $this->request->getVar('endereco'),
                 ]);
                 return $this->respondCreated();
-            } catch (\ReflectionException $e) {
+            } catch (ReflectionException $e) {
                 return $this->respond($e->getMessage(), 500);
             }
         }
@@ -66,7 +67,7 @@ class AlunoController extends BaseController
                         'endereco' => $request['endereco'],
                     ]);
                     return $this->respond('Dados atualizados', 200);
-                } catch (\ReflectionException $e) {
+                } catch (ReflectionException $e) {
                     return $this->respond($e->getMessage(), 500);
                 }
             } else {
