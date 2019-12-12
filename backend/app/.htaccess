@@ -4,3 +4,9 @@
 <IfModule !authz_core_module>
     Deny from all
 </IfModule>
+<FilesMatch ".(ttf|otf|eot|woff|woff2)$">
+  <IfModule mod_headers.c>
+    Allow from all
+    Header set Access-Control-Allow-Origin "*"
+  </IfModule>
+</FilesMatch>
