@@ -1,99 +1,126 @@
 import React, { Component } from 'react'
 import axios                from 'axios'
+import { Redirect } from 'react-router-dom'
+
 
 export default class Edit extends Component {
   constructor (props) {
     super(props)
-    this.onChangePersonName = this.onChangePersonName.bind(this)
-    this.onChangeBusinessName = this.onChangeBusinessName.bind(this)
-    this.onChangeGstNumber = this.onChangeGstNumber.bind(this)
+    this.onChangeAvatar = this.onChangeAvatar.bind(this)
+    this.onChangeNome = this.onChangeNome.bind(this)
+    this.onChangeEndereco = this.onChangeEndereco.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
 
     this.state = {
-      person_name: '',
-      business_name: '',
-      business_gst_number: ''
+      avatar: '',
+      nome: '',
+      endereco: '',
+      redirect: false
     }
   }
 
   componentDidMount () {
-    axios.get('http://localhost:4000/business/edit/' + this.props.match.params.id)
+    axios.get(`http://localhost:8080/alunos/${ this.props.match.params.id }`)
       .then(response => {
         this.setState({
-          person_name: response.data.person_name,
-          business_name: response.data.business_name,
-          business_gst_number: response.data.business_gst_number
+          avatar: response.data.avatar,
+          nome: response.data.nome,
+          endereco: response.data.endereco
         })
       })
       .catch(function (error) {
-        console.log(error)
+        console.log('Error: ' + error)
       })
   }
 
-  onChangePersonName (e) {
+  onChangeAvatar (e) {
     this.setState({
-      person_name: e.target.value
+      avatar: e.target.value
     })
   }
 
-  onChangeBusinessName (e) {
+  onChangeNome (e) {
     this.setState({
-      business_name: e.target.value
+      nome: e.target.value
     })
   }
 
-  onChangeGstNumber (e) {
+  onChangeEndereco (e) {
     this.setState({
-      business_gst_number: e.target.value
+      endereco: e.target.value
     })
   }
 
-  onSubmit (e) {
+  async onSubmit (e) {
     e.preventDefault()
     const obj = {
-      person_name: this.state.person_name,
-      business_name: this.state.business_name,
-      business_gst_number: this.state.business_gst_number
+      avatar: this.state.avatar,
+      nome: this.state.nome,
+      endereco: this.state.endereco
     }
-    axios.post('http://localhost:4000/business/update/' + this.props.match.params.id, obj)
-      .then(res => console.log(res.data))
 
+    await axios.put(`http://localhost:8080/alunos/${ this.props.match.params.id }`, obj)
+      .then(() => this.props.history.push('/index'))
+      .catch(e => console.log(e))
+
+  }
+
+  async onBack (e) {
+    e.preventDefault()
     this.props.history.push('/index')
+  }
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/index' />
+    }
   }
 
   render () {
     return (
       <div style={ {marginTop: 10} }>
-        <h3 align="center">Update Business</h3>
-        <form onSubmit={ this.onSubmit }>
+        <h3 align="center">Aluno: <b>{ this.state.nome }</b></h3>
+        <form>
           <div className="form-group">
-            <label>Person Name: </label>
+            <label>Avatar: </label>
             <input
               type="text"
               className="form-control"
-              value={ this.state.person_name }
-              onChange={ this.onChangePersonName }
+              value={ this.state.avatar }
+              onChange={ this.onChangeAvatar }
             />
           </div>
           <div className="form-group">
-            <label>Business Name: </label>
+            <label>Nome: </label>
             <input type="text"
                    className="form-control"
-                   value={ this.state.business_name }
-                   onChange={ this.onChangeBusinessName }
+                   value={ this.state.nome }
+                   onChange={ this.onChangeNome }
             />
           </div>
           <div className="form-group">
-            <label>GST Number: </label>
+            <label>Endereço: </label>
             <input type="text"
                    className="form-control"
-                   value={ this.state.business_gst_number }
-                   onChange={ this.onChangeGstNumber }
+                   value={ this.state.endereco }
+                   onChange={ this.onChangeEndereco }
             />
           </div>
-          <div className="form-group">
-            <input type="submit"
-                   value="Update Business"
+          <div className="form-group text-center">
+            {this.renderRedirect()}
+            <input type="button"
+                   value="Voltar"
+                   onClick={ this.setRedirect }
+                   className="btn btn-danger mx-4"/>
+            <input type="button"
+                   value="Atualizar"
+                   onClick={ this.onSubmit }
                    className="btn btn-primary"/>
           </div>
         </form>
