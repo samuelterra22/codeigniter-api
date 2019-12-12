@@ -10,26 +10,42 @@ class AlunoController extends BaseController
 {
     use ResponseTrait;
 
+    public function __construct()
+    {
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/x-www-form-urlencoded');
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method == "OPTIONS") {
+            die();
+        }
+    }
+
     public function index()
     {
-        $alunos = json_encode((new Aluno())->findAll());
-        return $this->respond($alunos, 200);
+        $alunos = (new Aluno())->findAll();
+        return $this->response
+            ->setJSON($alunos)
+            ->setStatusCode(200)
+            ->setContentType('application/x-www-form-urlencoded');
     }
 
     public function create()
     {
+        $request = json_decode($this->request->getBody(), true);
         $model = new Aluno();
 
-        if ($this->validate([
-            'nome'     => 'required',
-            'endereco' => 'required',
-        ])) {
+        if ($request['nome'] && $request['endereco']) {
             try {
-                $model->save([
-                    'nome'     => $this->request->getVar('nome'),
-                    'endereco' => $this->request->getVar('endereco'),
-                ]);
-                return $this->respondCreated();
+                $data = [
+                    'nome'     => $request['nome'],
+                    'endereco' => $request['endereco'],
+                ];
+                $model->save($data);
+                return $this->respondCreated($data);
             } catch (ReflectionException $e) {
                 return $this->respond($e->getMessage(), 500);
             }
@@ -38,29 +54,14 @@ class AlunoController extends BaseController
 
     }
 
-    public function show($id)
-    {
-        $model = new Aluno();
-        $aluno = $model->find($id);
-
-        if ($aluno) {
-            return $this->respond(json_encode($aluno), 200);
-        }
-        return $this->failNotFound();
-
-    }
-
     public function update($id)
     {
-        $request = $this->request->getRawInput();
+        $request = json_decode($this->request->getBody(), true);
         $model = new Aluno();
         $aluno = $model->find($id);
 
         if ($aluno) {
-            if ($this->validate([
-                'nome'     => 'required',
-                'endereco' => 'required',
-            ])) {
+            if ($request['nome'] && $request['endereco']) {
                 try {
                     $model->update($id, [
                         'nome'     => $request['nome'],
@@ -78,6 +79,18 @@ class AlunoController extends BaseController
         }
     }
 
+    public function show($id)
+    {
+        $model = new Aluno();
+        $aluno = $model->find($id);
+
+        if ($aluno) {
+            return $this->respond(json_encode($aluno), 200);
+        }
+        return $this->failNotFound();
+
+    }
+
     public function delete($id)
     {
         $model = new Aluno();
@@ -88,6 +101,11 @@ class AlunoController extends BaseController
             return $this->respondDeleted(json_encode($aluno), 200);
         }
         return $this->failNotFound();
+    }
+
+    public function options($id)
+    {
+        return $this->respond($id);
     }
 
 }
