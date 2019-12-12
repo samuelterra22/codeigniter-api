@@ -73,14 +73,16 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('alunos/new', 'AlunoController::new');
+$routes->options('alunos/(.*)', 'AlunoController::options/$1');
+$routes->options('alunos', 'AlunoController::options/$1');
+
+
 $routes->post('alunos', 'AlunoController::create');
 $routes->get('alunos', 'AlunoController::index');
-$routes->get('alunos/(:segment)', 'AlunoController::show/$1');
-$routes->get('alunos/(:segment)/edit', 'AlunoController::edit/$1');
-$routes->put('alunos/(:segment)', 'AlunoController::update/$1');
-$routes->patch('alunos/(:segment)', 'AlunoController::update/$1');
-$routes->delete('alunos/(:segment)', 'AlunoController::delete/$1');
+$routes->get('alunos/(.*)', 'AlunoController::show/$1');
+$routes->put('alunos/(.*)', 'AlunoController::update/$1');
+$routes->delete('alunos/(.*)', 'AlunoController::delete/$1');
+
 
 /**
  * --------------------------------------------------------------------
