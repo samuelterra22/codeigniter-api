@@ -76,7 +76,7 @@ $routes->get('/', 'Home::index');
 $routes->options('alunos/(.*)', 'AlunoController::options/$1');
 $routes->options('alunos', 'AlunoController::options/$1');
 
-
+$routes->patch('alunos', 'AlunoController::create');
 $routes->post('alunos', 'AlunoController::create');
 $routes->get('alunos', 'AlunoController::index');
 $routes->get('alunos/(.*)', 'AlunoController::show/$1');
