@@ -4,8 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Aluno;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\HTTP\Response;
 use ReflectionException;
 
+/**
+ * Class AlunoController
+ *
+ * @package App\Controllers
+ */
 class AlunoController extends BaseController
 {
     use ResponseTrait;
@@ -24,6 +30,11 @@ class AlunoController extends BaseController
         }
     }
 
+    /**
+     * Função responsável por retornar os alunos cadastrados.
+     *
+     * @return Response
+     */
     public function index()
     {
         $alunos = (new Aluno())->findAll();
@@ -33,6 +44,12 @@ class AlunoController extends BaseController
             ->setContentType('application/x-www-form-urlencoded');
     }
 
+    /**
+     * Função responsável por realizar a persistencia de um novo
+     * aluno.
+     *
+     * @return mixed
+     */
     public function create()
     {
         $request = json_decode($this->request->getBody(), true);
@@ -55,6 +72,14 @@ class AlunoController extends BaseController
 
     }
 
+    /**
+     * Função responsável por atualizar as informações de um
+     * aluno expecífico.
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
     public function update($id)
     {
         $request = json_decode($this->request->getBody(), true);
@@ -81,6 +106,13 @@ class AlunoController extends BaseController
         }
     }
 
+    /**
+     * Função responsável por retornar os dados de um aluno específico.
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
     public function show($id)
     {
         $model = new Aluno();
@@ -93,6 +125,13 @@ class AlunoController extends BaseController
 
     }
 
+    /**
+     * Função responsável por realizar a exlusão de um aluno.
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
     public function delete($id)
     {
         $model = new Aluno();
