@@ -13,6 +13,7 @@ class Aluno extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = [
+        'avatar',
         'nome',
         'endereco',
     ];
