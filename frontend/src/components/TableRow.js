@@ -19,7 +19,7 @@ class TableRow extends Component {
     return (
       <tr>
         <td>
-          { this.props.obj.avatar }
+          <img src={ this.props.obj.avatar } alt="avatar" className="img-thumbnail w-25"/>
         </td>
         <td>
           { this.props.obj.nome }
