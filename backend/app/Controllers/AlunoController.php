@@ -41,6 +41,7 @@ class AlunoController extends BaseController
         if ($request['nome'] && $request['endereco']) {
             try {
                 $data = [
+                    'avatar'   => $request['avatar'],
                     'nome'     => $request['nome'],
                     'endereco' => $request['endereco'],
                 ];
@@ -64,6 +65,7 @@ class AlunoController extends BaseController
             if ($request['nome'] && $request['endereco']) {
                 try {
                     $model->update($id, [
+                        'avatar'   => $request['avatar'],
                         'nome'     => $request['nome'],
                         'endereco' => $request['endereco'],
                     ]);
