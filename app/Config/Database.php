@@ -39,7 +39,7 @@ class Database extends Config
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
-        'DBDebug'  => (ENVIRONMENT !== 'production'),
+        'DBDebug'  => true, // (ENVIRONMENT !== 'production'),
         'cacheOn'  => false,
         'cacheDir' => '',
         'charset'  => 'utf8',
