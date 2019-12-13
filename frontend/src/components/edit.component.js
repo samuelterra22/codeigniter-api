@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios                from 'axios'
-import { Redirect } from 'react-router-dom'
-
+import { Redirect }         from 'react-router-dom'
 
 export default class Edit extends Component {
   constructor (props) {
@@ -34,9 +33,15 @@ export default class Edit extends Component {
   }
 
   onChangeAvatar (e) {
-    this.setState({
-      avatar: e.target.value
-    })
+    let file = e.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+
+    reader.onload = (e) => {
+      this.setState({
+        avatar: e.target.result
+      })
+    }
   }
 
   onChangeNome (e) {
@@ -78,7 +83,7 @@ export default class Edit extends Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/index' />
+      return <Redirect to='/index'/>
     }
   }
 
@@ -88,14 +93,18 @@ export default class Edit extends Component {
         <h3 align="center">Aluno: <b>{ this.state.nome }</b></h3>
         <form>
           <div className="form-group">
-            <label>Avatar: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={ this.state.avatar }
-              onChange={ this.onChangeAvatar }
+            <label>Avatar: </label><br/>
+            <img src={ this.state.avatar }
+                 className="img-thumbnail"
+                 style={ {maxWidth: 10 + '%'} }
+                 alt="img"
+            /><br/>
+            <input type="file"
+                   id='multi'
+                   onChange={ this.onChangeAvatar }
             />
           </div>
+
           <div className="form-group">
             <label>Nome: </label>
             <input type="text"
@@ -113,7 +122,7 @@ export default class Edit extends Component {
             />
           </div>
           <div className="form-group text-center">
-            {this.renderRedirect()}
+            { this.renderRedirect() }
             <input type="button"
                    value="Voltar"
                    onClick={ this.setRedirect }

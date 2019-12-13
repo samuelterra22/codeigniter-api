@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import axios                from 'axios'
 import { Redirect }         from 'react-router-dom'
+import axios                from 'axios'
 
 export default class Create extends Component {
   constructor (props) {
@@ -18,9 +18,15 @@ export default class Create extends Component {
   }
 
   onChangeAvatar (e) {
-    this.setState({
-      avatar: e.target.value
-    })
+    let file = e.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+
+    reader.onload = (e) => {
+      this.setState({
+        avatar: e.target.result
+      })
+    }
   }
 
   onChangeNome (e) {
@@ -54,12 +60,12 @@ export default class Create extends Component {
       nome: this.state.nome,
       endereco: this.state.endereco
     }
+
     await axios.post(`http://localhost:8080/alunos`, obj)
-      .then(res => {
+      .then(() => {
         this.props.history.push('/index')
       })
       .catch(e => console.log('erro :' + e))
-
   }
 
   render () {
@@ -68,13 +74,17 @@ export default class Create extends Component {
         <h3>Adicionar Aluno</h3>
         <form onSubmit={ this.onSubmit }>
           <div className="form-group">
-            <label>Avatar: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={ this.state.avatar }
-              onChange={ this.onChangeAvatar }
+            <label>Avatar: </label><br/>
+            <img src={ this.state.avatar }
+                 className="img-thumbnail"
+                 style={ {maxWidth: 10 + '%'} }
+                 alt="img"
+            /><br/>
+            <input type="file"
+                   id='multi'
+                   onChange={ this.onChangeAvatar }
             />
+
           </div>
           <div className="form-group">
             <label>Nome: </label>
