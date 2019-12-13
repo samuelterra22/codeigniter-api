@@ -13,13 +13,17 @@ class Alunos extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'avatar'   => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
             'nome'     => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
             'endereco' => [
-                'type' => 'TEXT',
-                'null' => true,
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
             ],
         ]);
         $this->forge->addKey('id', true);
