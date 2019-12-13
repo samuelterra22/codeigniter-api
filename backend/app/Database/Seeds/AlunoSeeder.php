@@ -11,8 +11,9 @@ class AlunoSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $this->db->table('alunos')->insert([
+                'avatar'     => $faker->imageUrl(),
                 'nome'     => $faker->name,
                 'endereco' => $faker->address,
             ]);
